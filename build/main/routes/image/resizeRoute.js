@@ -6,6 +6,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = __importDefault(require("express"));
 var routes = express_1.default.Router();
 routes.get("/", function (req, res) {
-    res.send("image route");
+    var name = req.query.name;
+    var width = req.query.width;
+    var height = req.query.height;
+    var fileName = "".concat(name, "_").concat(width, "_").concat(height);
+    var dir = "./" + fileName + ".jpg";
 });
 exports.default = routes;
