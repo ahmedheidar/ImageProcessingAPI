@@ -1,3 +1,5 @@
-const firstname = "ahmed";
-
-console.log("hey" + firstname);
+const myFunc = (num: number): number => {
+    return num * num;
+  };
+  
+  export default myFunc
