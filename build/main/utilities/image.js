@@ -39,37 +39,53 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var express_1 = __importDefault(require("express"));
-var fs_1 = __importDefault(require("fs"));
-var image_1 = __importDefault(require("../../utilities/image"));
-var routes = express_1.default.Router();
-routes.get("/", function (req, res) {
-    var dir = image_1.default.pathConcat(req);
-    fs_1.default.exists(dir, function (exists) { return __awaiter(void 0, void 0, void 0, function () {
-        var image, resizedImage;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    if (!exists) return [3 /*break*/, 1];
-                    console.log(dir + " exists in cache.");
-                    res.sendFile(dir);
-                    return [3 /*break*/, 3];
-                case 1:
-                    console.log("Image doesnt exist in cache");
-                    image = image_1.default.imageInfo(req);
-                    return [4 /*yield*/, image_1.default.resizeImage(image.name, parseInt(image.width), parseInt(image.height), image.dir)];
-                case 2:
-                    resizedImage = _a.sent();
-                    if (resizedImage === true) {
-                        res.sendFile(dir);
-                    }
-                    else {
-                        res.send("Error in resizing Image!");
-                    }
-                    _a.label = 3;
-                case 3: return [2 /*return*/];
-            }
-        });
-    }); });
-});
-exports.default = routes;
+var sharp_1 = __importDefault(require("sharp"));
+var resizeImage = function (imageName, width, height, dir) { return __awaiter(void 0, void 0, void 0, function () {
+    var imagePath, error_1;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                imagePath = "F:\\PROGRAMMING\\ImageProcessingAPI\\src\\main\\resources\\static\\" +
+                    imageName +
+                    ".jpg";
+                _a.label = 1;
+            case 1:
+                _a.trys.push([1, 3, , 4]);
+                return [4 /*yield*/, (0, sharp_1.default)(imagePath)
+                        .resize({
+                        width: width,
+                        height: height,
+                    })
+                        .toFile(dir)];
+            case 2:
+                _a.sent();
+                return [2 /*return*/, true];
+            case 3:
+                error_1 = _a.sent();
+                console.log("HASDHASHCASCHACSAC" + error_1);
+                return [2 /*return*/, false];
+            case 4: return [2 /*return*/];
+        }
+    });
+}); };
+var imageInfo = function (req) {
+    var name = req.query.name;
+    var width = req.query.width;
+    var height = req.query.height;
+    var fileName = "".concat(name, "_").concat(width, "_").concat(height);
+    var dir = "F:\\PROGRAMMING\\ImageProcessingAPI\\src\\main\\resources\\cache\\".concat(fileName, ".jpg");
+    return { name: name, width: width, height: height, dir: dir };
+};
+var pathConcat = function (req) {
+    var name = req.query.name;
+    var width = req.query.width;
+    var height = req.query.height;
+    var fileName = "".concat(name, "_").concat(width, "_").concat(height);
+    var dir = "F:\\PROGRAMMING\\ImageProcessingAPI\\src\\main\\resources\\cache\\".concat(fileName, ".jpg");
+    return dir;
+};
+exports.default = {
+    pathConcat: pathConcat,
+    imageInfo: imageInfo,
+    resizeImage: resizeImage,
+};

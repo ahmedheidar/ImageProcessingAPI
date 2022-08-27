@@ -18,8 +18,10 @@ const resizeImage = async (
                 height: height,
             })
             .toFile(dir);
+            return true;
     } catch (error) {
-        console.log(error);
+        console.log("HASDHASHCASCHACSAC"+error);
+        return false;
     }
 };
 

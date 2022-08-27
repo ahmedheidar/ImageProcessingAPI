@@ -39,37 +39,22 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var express_1 = __importDefault(require("express"));
-var fs_1 = __importDefault(require("fs"));
-var image_1 = __importDefault(require("../../utilities/image"));
-var routes = express_1.default.Router();
-routes.get("/", function (req, res) {
-    var dir = image_1.default.pathConcat(req);
-    fs_1.default.exists(dir, function (exists) { return __awaiter(void 0, void 0, void 0, function () {
-        var image, resizedImage;
+var supertest_1 = __importDefault(require("supertest"));
+var index_1 = __importDefault(require("../../main/index"));
+var request = (0, supertest_1.default)(index_1.default);
+describe('Test endpoint responses', function () {
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = 20000;
+    it('gets the api endpoint', function (done) { return __awaiter(void 0, void 0, void 0, function () {
+        var response;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0:
-                    if (!exists) return [3 /*break*/, 1];
-                    console.log(dir + " exists in cache.");
-                    res.sendFile(dir);
-                    return [3 /*break*/, 3];
+                case 0: return [4 /*yield*/, request.get('http://localhost:5000/api')];
                 case 1:
-                    console.log("Image doesnt exist in cache");
-                    image = image_1.default.imageInfo(req);
-                    return [4 /*yield*/, image_1.default.resizeImage(image.name, parseInt(image.width), parseInt(image.height), image.dir)];
-                case 2:
-                    resizedImage = _a.sent();
-                    if (resizedImage === true) {
-                        res.sendFile(dir);
-                    }
-                    else {
-                        res.send("Error in resizing Image!");
-                    }
-                    _a.label = 3;
-                case 3: return [2 /*return*/];
+                    response = _a.sent();
+                    expect(response.status).toBe(200);
+                    done();
+                    return [2 /*return*/];
             }
         });
     }); });
 });
-exports.default = routes;
