@@ -41,6 +41,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var sharp_1 = __importDefault(require("sharp"));
 var path_1 = __importDefault(require("path"));
+var fs_1 = __importDefault(require("fs"));
 var resizeImage = function (imageName, width, height, dir) { return __awaiter(void 0, void 0, void 0, function () {
     var dirname, imagePath, error_1;
     return __generator(this, function (_a) {
@@ -86,8 +87,20 @@ var pathConcat = function (req) {
     var dir = path_1.default.join(dirname, "resources", "cache", fileName + ".jpg");
     return dir;
 };
+var validatNumbers = function (req) {
+    var width = req.query.width;
+    var height = req.query.height;
+    return isNaN(width) || isNaN(height);
+};
+var validateImageName = function (req) {
+    var dirname = path_1.default.dirname(__dirname);
+    var imagePath = path_1.default.join(dirname, "resources", "static", req.query.name + ".jpg");
+    return fs_1.default.existsSync(imagePath);
+};
 exports.default = {
     pathConcat: pathConcat,
     imageInfo: imageInfo,
     resizeImage: resizeImage,
+    validatNumbers: validatNumbers,
+    validateImageName: validateImageName,
 };

@@ -44,6 +44,14 @@ var fs_1 = __importDefault(require("fs"));
 var image_1 = __importDefault(require("../../utilities/image"));
 var routes = express_1.default.Router();
 routes.get("/", function (req, res) {
+    if (image_1.default.validatNumbers(req)) {
+        res.send("Please enter valid width and height");
+        return;
+    }
+    if (!image_1.default.validateImageName(req)) {
+        res.send("Image does not exsist");
+        return;
+    }
     var dir = image_1.default.pathConcat(req);
     fs_1.default.exists(dir, function (exists) { return __awaiter(void 0, void 0, void 0, function () {
         var image, resizedImage;
@@ -55,7 +63,7 @@ routes.get("/", function (req, res) {
                     res.sendFile(dir);
                     return [3 /*break*/, 3];
                 case 1:
-                    console.log("Image doesnt exist in cache");
+                    console.log("Image does not exist in cache");
                     image = image_1.default.imageInfo(req);
                     return [4 /*yield*/, image_1.default.resizeImage(image.name, parseInt(image.width), parseInt(image.height), image.dir)];
                 case 2:

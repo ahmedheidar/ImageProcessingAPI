@@ -1,13 +1,14 @@
 import { Request } from "express";
 import sharp from "sharp";
 import path from "path";
+import fs from "fs";
 
 const resizeImage = async (
     imageName: string,
     width: number,
     height: number,
     dir: string
-) => {
+): Promise<boolean> => {
     const dirname = path.dirname(__dirname);
     const imagePath = path.join(
         dirname,
@@ -29,7 +30,7 @@ const resizeImage = async (
     }
 };
 
-const imageInfo = (req: Request) => {
+const imageInfo = (req: Request): any => {
     const name = req.query.name as string;
     const width = req.query.width as string;
     const height = req.query.height as string;
@@ -39,7 +40,7 @@ const imageInfo = (req: Request) => {
     return { name, width, height, dir };
 };
 
-const pathConcat = (req: Request) => {
+const pathConcat = (req: Request): string => {
     const name = req.query.name as string;
     const width = req.query.width as string;
     const height = req.query.height as string;
@@ -49,8 +50,27 @@ const pathConcat = (req: Request) => {
     return dir;
 };
 
+const validatNumbers = (req: Request): boolean => {
+    const width = req.query.width as unknown as number;
+    const height = req.query.height as unknown as number;
+    return isNaN(width) || isNaN(height);
+};
+
+const validateImageName = (req: Request): boolean => {
+    const dirname = path.dirname(__dirname);
+    const imagePath = path.join(
+        dirname,
+        "resources",
+        "static",
+        req.query.name + ".jpg"
+    );
+    return fs.existsSync(imagePath);
+};
+
 export default {
     pathConcat,
     imageInfo,
     resizeImage,
+    validatNumbers,
+    validateImageName,
 };
