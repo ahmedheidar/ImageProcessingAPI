@@ -8,8 +8,8 @@ var resizeRoute_1 = __importDefault(require("./routes/image/resizeRoute"));
 var app = (0, express_1.default)();
 var port = 5000;
 app.use("/image", resizeRoute_1.default);
-app.get('/api', function (req, res) {
-    res.send("Hello");
+app.get("/api", function (req, res) {
+    res.send("Hello").status(200);
 });
 app.listen(port, function () {
     console.log("server started at localhost:".concat(port));

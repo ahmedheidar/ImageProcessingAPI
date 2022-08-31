@@ -1,5 +1,6 @@
 import { Request } from "express";
 import sharp from "sharp";
+import path from "path";
 
 const resizeImage = async (
     imageName: string,
@@ -7,10 +8,13 @@ const resizeImage = async (
     height: number,
     dir: string
 ) => {
-    const imagePath =
-        "F:\\PROGRAMMING\\ImageProcessingAPI\\src\\main\\resources\\static\\" +
-        imageName +
-        ".jpg";
+    const dirname = path.dirname(__dirname);
+    const imagePath = path.join(
+        dirname,
+        "resources",
+        "static",
+        imageName + ".jpg"
+    );
     try {
         await sharp(imagePath)
             .resize({
@@ -18,9 +22,9 @@ const resizeImage = async (
                 height: height,
             })
             .toFile(dir);
-            return true;
+        return true;
     } catch (error) {
-        console.log("HASDHASHCASCHACSAC"+error);
+        console.log("HASDHASHCASCHACSAC" + error);
         return false;
     }
 };
@@ -30,7 +34,8 @@ const imageInfo = (req: Request) => {
     const width = req.query.width as string;
     const height = req.query.height as string;
     const fileName = `${name}_${width}_${height}`;
-    const dir = `F:\\PROGRAMMING\\ImageProcessingAPI\\src\\main\\resources\\cache\\${fileName}.jpg`;
+    const dirname = path.dirname(__dirname);
+    const dir = path.join(dirname, "resources", "cache", fileName + ".jpg");
     return { name, width, height, dir };
 };
 
@@ -39,7 +44,8 @@ const pathConcat = (req: Request) => {
     const width = req.query.width as string;
     const height = req.query.height as string;
     const fileName = `${name}_${width}_${height}`;
-    const dir = `F:\\PROGRAMMING\\ImageProcessingAPI\\src\\main\\resources\\cache\\${fileName}.jpg`;
+    const dirname = path.dirname(__dirname);
+    const dir = path.join(dirname, "resources", "cache", fileName + ".jpg");
     return dir;
 };
 

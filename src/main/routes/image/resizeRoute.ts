@@ -1,10 +1,10 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import fs from "fs";
 import util from "../../utilities/image";
 
 const routes = express.Router();
 
-routes.get("/", (req, res) =>{
+routes.get("/", (req: Request, res: Response): void => {
     const dir = util.pathConcat(req);
     fs.exists(dir, async (exists) => {
         if (exists) {
@@ -13,11 +13,16 @@ routes.get("/", (req, res) =>{
         } else {
             console.log("Image doesnt exist in cache");
             const image = util.imageInfo(req);
-            const resizedImage = await util.resizeImage(image.name, parseInt(image.width),parseInt(image.height),image.dir);
-            if(resizedImage===true){
-                res.sendFile(dir)
-            }else{
-                res.send("Error in resizing Image!")
+            const resizedImage = await util.resizeImage(
+                image.name,
+                parseInt(image.width),
+                parseInt(image.height),
+                image.dir
+            );
+            if (resizedImage === true) {
+                res.sendFile(dir);
+            } else {
+                res.send("Error in resizing Image!");
             }
         }
     });

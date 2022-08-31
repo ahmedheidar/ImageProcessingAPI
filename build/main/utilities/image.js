@@ -40,14 +40,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var sharp_1 = __importDefault(require("sharp"));
+var path_1 = __importDefault(require("path"));
 var resizeImage = function (imageName, width, height, dir) { return __awaiter(void 0, void 0, void 0, function () {
-    var imagePath, error_1;
+    var dirname, imagePath, error_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                imagePath = "F:\\PROGRAMMING\\ImageProcessingAPI\\src\\main\\resources\\static\\" +
-                    imageName +
-                    ".jpg";
+                dirname = path_1.default.dirname(__dirname);
+                imagePath = path_1.default.join(dirname, "resources", "static", imageName + ".jpg");
                 _a.label = 1;
             case 1:
                 _a.trys.push([1, 3, , 4]);
@@ -73,7 +73,8 @@ var imageInfo = function (req) {
     var width = req.query.width;
     var height = req.query.height;
     var fileName = "".concat(name, "_").concat(width, "_").concat(height);
-    var dir = "F:\\PROGRAMMING\\ImageProcessingAPI\\src\\main\\resources\\cache\\".concat(fileName, ".jpg");
+    var dirname = path_1.default.dirname(__dirname);
+    var dir = path_1.default.join(dirname, "resources", "cache", fileName + ".jpg");
     return { name: name, width: width, height: height, dir: dir };
 };
 var pathConcat = function (req) {
@@ -81,7 +82,8 @@ var pathConcat = function (req) {
     var width = req.query.width;
     var height = req.query.height;
     var fileName = "".concat(name, "_").concat(width, "_").concat(height);
-    var dir = "F:\\PROGRAMMING\\ImageProcessingAPI\\src\\main\\resources\\cache\\".concat(fileName, ".jpg");
+    var dirname = path_1.default.dirname(__dirname);
+    var dir = path_1.default.join(dirname, "resources", "cache", fileName + ".jpg");
     return dir;
 };
 exports.default = {
