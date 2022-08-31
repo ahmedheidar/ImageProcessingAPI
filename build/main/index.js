@@ -14,6 +14,4 @@ app.get("/api", function (req, res) {
 app.listen(port, function () {
     console.log("server started at localhost:".concat(port));
 });
-exports.default = {
-    app: app
-};
+exports.default = app;
